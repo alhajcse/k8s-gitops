@@ -1,11 +1,31 @@
-# services/product-service/deployment.yaml
-...
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-service
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-service
+  template:
+    metadata:
+      labels:
+        app: product-service
     spec:
       containers:
         - name: product-service
-          # update your created image
-          image: alhajcse/product-service:1.0.0 
-          imagePullPolicy: Always
+          image: alhajcse/product-service:1.0.0 # আপনার ইমেজ
           ports:
             - containerPort: 8081
-...
+          envFrom:
+            - configMapRef:
+                name: product-service-config
+            - secretRef:
+                name: product-service-secret # ⭐ Admin যে সিক্রেট বানাবে
+          resources:
+            requests: { memory: "256Mi", cpu: "100m" }
+            limits: { memory: "512Mi", cpu: "500m" }
+          readinessProbe:
+            httpGet: { path: /actuator/health/readiness, port: 8081 }
+            initialDelaySeconds: 15
