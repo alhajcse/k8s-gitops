@@ -242,6 +242,9 @@ kubectl rollout status deploy/product-service -n dev
 kubectl get pods -n dev -l app=product-service -o wide
 # → 2 pods Running (image: alhajcse/product-service:1.4.0)
 
+# ─── Pod Details Status───
+kubectl describe pod -n dev product-service-5c8d469498-vfz52 | grep -A 10 "Events:"
+
 Or
 
 # update K8s
