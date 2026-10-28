@@ -223,6 +223,24 @@ cd ~/Documents/micro-services/product-service
 docker build -t alhajcse/product-service:1.5.0 .
 docker push alhajcse/product-service:1.5.0
 
+
+cd ~/Documents/k8s-gitops/services/product-service
+# Update yaml file
+nano deployment.yaml
+
+# ─── Deployment update
+kubectl apply -f deployment.yaml
+
+# ─── Rollout Status ───
+kubectl rollout status deploy/product-service -n dev
+# → deployment "product-service" successfully rolled out
+
+# ─── Pods (New image) ───
+kubectl get pods -n dev -l app=product-service -o wide
+# → 2 pods Running (image: alhajcse/product-service:1.4.0)
+
+Or
+
 # update K8s
 kubectl -n dev set image deployment/product-service product-service=alhajcse/product-service:1.5.0
 
