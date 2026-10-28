@@ -231,6 +231,9 @@ nano deployment.yaml
 # ─── Deployment update
 kubectl apply -f deployment.yaml
 
+# App restart for config load
+kubectl rollout restart deploy/product-service -n dev
+
 # ─── Rollout Status ───
 kubectl rollout status deploy/product-service -n dev
 # → deployment "product-service" successfully rolled out
